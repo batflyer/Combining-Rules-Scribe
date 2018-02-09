@@ -1,0 +1,188 @@
+Title: Causal Independence and Combining Rules
+Credit: Presentation by
+Author: Harsha Kokel and Nandini Ramanan
+Source: Transcription by Alexander L. Hayes
+Notes:
+	DRAFT 0.1
+	Transcription was done from a voice-recorded copy of the presentation and is meant to be as close as possible to what was discussed during the presentation. Based in part on: Sriraam Natarajan, Tushar Khot, Daniel Lowd, Kristian Kersting, Prasad Tadepalli, Jude Shavlik. "Exploiting Causal Independence in Markov Logic Networks: Combining Undirected and Directed Models." European Conference on Machine Learning (ECML), 2010.
+	
+Copyright: Released under a Creative Commons 3.0 (c) 2017 Alexander L. Hayes
+
+
+====
+
+**WEDNESDAY, FEBRUARY 7, 2018: University of Texas at Dallas, ECSS 2.311. CS 7301.002: StaRAI Seminar** Harsha and Nandini stand at the front of the lecture hall, preparing to present their slides.
+
+HARSHA
+We are going to present the paper on "Exploiting Causal Independence in Markov Logic Networks." It's basically combining directed and undirected models. This paper was published in ECML 2010 and the authors have... sure.
+
+SRIRAAM
+So this is actually, uh, a challenging paper for one reason: you have to tell me the cons of my paper in front of me.
+
+**LAUGHS FROM THE AUDIENCE**
+
+SRIRAAM (CONT'D)
+And defend it!
+
+HARSHA
+Okay, so uh. So we have already studied directed and undirected models, directed models are the Bayesian nets and PRMs and BLPs, and directed (sic) models are MLNs. Both directed and undirected models have their own advantages and disadvantages, undirected model has an advantage that they allow cycles. Undirected models doesn't allow cycle for... because they need a coherent joint distribution. Directed models have advantage that they allow combining rules which is instrumental for causal independence, I'm not sure if everyone understands what causal independence is, so I'll just explain it
+
+**WALKS TO THE BOARD**
+
+HARSHA (CONT'D)
+So if we have say an alarm and n sensors in our home, then the value of the alarm depends on all of the sensors, so the parameters needed for this CPT would be two raised to n. But if you see if you notice that the affect of one sensor on the alarm is independent of what this sensor has itself as. So we can have a hidden variable A1, A2, and so on, and we can this...
+
+SRIRAAM
+No, no, no, you started beautifully, okay. That hidden variable is just a representation and can be done in many different ways, so don't talk about it. You have a good point, two power n, tell me the problem with this. The hidden node is one way of solving it, I can think of many ways of solving it, an elegant way of solving it is through hidden nodes, but what is the problem with the two power n?
+
+HARSHA
+Uh, because it is two raised to n, we have to learn these many parameters to do any kind of inference. Two raised to n is exponential so it would be impractical in practical scenarios.
+
+SRIRAAM
+Right but you are going for the practical scenario. Why is the sensor 1 independent of sensor 2, talk about it there.
+
+HARSHA
+Uh, so, if you see that you have one sensor that can do one and one that can do to, and you have say smoke in room one, the sensor would trigger the alarm, and that would not depend on the triggering of this alarm by sensor one would not depend on what is the value of the other sensors in other rooms are detecting.
+
+SRIRAAM
+Exactly. So the point is there are many causes that influence your target. But the causes can be possibly independent of each other, okay? And in that case, learning a full conditional probability distribution is wasteful. So think of another reason, you could have fever, so fever could be caused by many, many, many diseases. It could be a simple cold, it could be a flu, I don't know. It could be caused by whatever, a throat infection and so on and so forth, any of them could cause fever. But the probability of each of them causing fever is independent of each other, okay? In classic probabilistic modeling this is called "Independence of causal influences. ICI", a paper by David Heckerman in I want to say 1993. And then this was also extended by others, Maxwell and Chickering did some really good work on this as well in '94. So the Uncertainty in AI community was looking at causal independence as one of the methods. As she rightly points out, it's not just the learning that's hard, Harsha, it's the number of examples that you need to learn that is also exponential; it's doubly exponential because to get a reliable probability distribution you need to get a number of examples that is exponential in the number of examples, so it's actually two to two to n that's the number of examples that you need. So, uh, so from all probabilities, from all possibilities, the best thing to do is treat them as independent of one another and somehow combine their effects.
+
+HARSHA
+Yes, so, uh, we said that these can basically be treated as independent from each other in some scenarios--not all. So you can have all of these hidden variables or temporarily or hidden variables here, which may actually signify the impact of sensor one on the alarm.  We can name them A1 to AN, and now you can see the impact of S1 is only on A1, two and two into N parameters. So the learning and the inference would be more efficient, and now we can combine all of these results with combining rules, and that could give us the likelihood of alarm.
+
+SRIRAAM
+But the thing is that you don't know, it's hidden because you only observe whether the alarm sounded. You only observe whether you have fever, and you don't really know which of these causes triggered it. So that's why these are all hidden, get it? Alex! Do you get it? Why the node is hidden? That the entire set, just draw a rectangle around the entire group. The entire group is hidden, only because you only see the ultimate effect and you may observe the cause, but you may observe some other causes. Okay?
+
+HARSHA
+So this is the advantage in of directed models that they can have combining rules, which...
+
+SRIRAAM
+Hmm... what is the advantage, I don't see the advantage, I mean this is a modeling group, it's still exponential reduction in parameters, is that why? To me that is one of the reason, one of the key reasons is that you can encode domain knowledge. In medical you can get the domain models, with undirected models you cannot encode this knowledge easily.
+
+HARSHA
+So this advantage is not there in undirected models, so we would want to get the best of both worlds and see if we can have causal independence with cycles. So the question here is can we represent combining rules using MLNs? That would help us do that. Uh... So as I already showed you some combining rule, so here is an example of two level combining rules where the satisfcation of a student depends on his grade and his uhh quality of his papers he or she has authored. So notice that the student may have taken multiple courses and there may be multiple grades and a student may have authored multiple papers so there may be multiple qualities. So we combine all the grades by combining rules here at one, and combine all the qualities by CR1, these CR1s may be different they may not be the same combining rule. But the point here is, we are combining multiple instances in Level 1, and in Level 2 we are combining multiple rules, say grade is one rule, and quality of the paper is another rule, we are combining multiple rules in level two. Sow we use FOCI statement model to, a language to represent directed models which I think Professor had worked in one of the classes. So combining functions can be of two types: decomposible and nondecomposible. Decomposible combining function is a special case of combining functions which have a special kind of associativity properties in states, so if I draw a parallelism with the previous example, Y will be your satisfaction and your x values will be... also be your grade. And the T would be the hidden variables, the number of function F is your level 1 combining rule and G is your level 2 combining rule. So F takes some prior knowledge P and your hidden value P1 and gives out one, and function 2 would take variable and T2 would put out variable, and so on. G would be the same thing. The decomposability property says, If you can replace all of these functions F with a way in which the ordering of the T values do not matter and you get the same unique distribution from the F, then the particular combining function is a decomposible combining function. Most of the combining functions that you've seen like: average, noisy-or, mean, or max-mean, minimum, etc. are decomposible in nature.
+
+SRIRAAM
+Wait, so give me an example of non-decomposible.
+
+HARSHA
+Correlation...
+
+NANDINI^
+Integration...
+
+HARSHA
+Integration, difference, cross-correlation (not correlation) cross-correlations, matrix-multiplications, then more? Multiply matrixes in different order and you'll get different results.
+
+SRIRAAM
+Not if the matrix is in a different order, but the entries in a matrix can be changed, right? If I can change make sure the changes are correct exactly, then you can get it... and who does matrix multiplications as for a combination function?
+
+NANDINI
+So, integrations and differentiations...
+
+HARSHA^
+Top 5...
+
+SRIRAAM
+Why do you integrate a combination function? Better example is the first M. The first of M, the best of the M, the best N-of-M, min-of-N. But that depends on the first few values, okay? So the idea is very simple, it doesn't matter the order in what order I'm looking at the papers, it doesn't matter in what order I'm looking at the courses. You are always guarenteed to get the same exact combination, exact probability distribution. And advice to the two of you, when you're doing this, and you're defining this combining rule function, this combination function, it seems like I invented this, it's not true. You should put this true source below. I believe this was from the Heckerman and.... So Heckerman's paper, so you should put that citation there, we are only borrowing that definition to do something.
+
+HARSHA
+As I told, that most of the combining rules that we use are decomposible combining functions. So here, what you we will do is that we will use the FOCI statement and represent them in a Bayesian network and convert this Bayesian network to MLNs using the clauses that Nandini will soon discuss, I just go through the converted FOCI statement to the Bayesian Network. So you see, Y is your, and C is your sources. A could have multiple instances X1 to XN, Z could have multiple sources Z1 to ZN. And we convert, we can, we use hidden variables, hidden variables one and two. H is the conversion, H is the multiplexer on how it is, but it is actually the combining function. H is your level 1 combining function and Hr is your level 2 combining function and we convert this into Markov Logic Networks using clauses.
+
+NANDINI
+So we use this directed lifted Bayesian Network representation to convert this to specialized clauses for each combination of the combining rules that we can personally have (decomposible combining functions that we can have). So therefore, a particular set of different clauses we generate, one of the main cpt clauses, this is straightforward translation, but each independent parameters of the cpt Bayes net is translated to an MLN clause, such an example is given here, where a xy from the previous directed model (the top one), all the independent parameters are converted to the clauses here (cpt clauses) with a weight where weight depends on the parameter Pi, which is how likely this particular target in the worlds were given the particular assignment of the parent. And also, these hidden nodes, the T nodes, they have all the set of the arguments that are possible in the body along with i (that is the index of the particular rule you are looking at).
+
+SRIRAAM
+Could you go back one slide? One more? I think this should be explained better, you ran away too quickly. So no one has questions? Everyone understood this? Scribe? Have you understood this? Can one of you explain this?
+
+ALEXANDER
+I think... sorry. So you have individual features that are combined on one level...
+
+SRIRAAM^
+I know you can talk louder than that.
+
+ALEXANDER
+Okay, individual features that are combined in one level, and you combine those on another level and eventually that influences your target... But...
+
+SRIRAAM
+So look at this picture that she drew, what she is saying is: "Every sensor gives me a distribution over whether alarm is sounding or not." Okay? Every sensor gives me a distribution over alarm is sounding or not. So when what do you do? You take these multiple distributions, from this: your combining rule either chooses one of these distributions or combines the effect of multiple distributions, okay?
+
+NANDINI
+This is level one...
+
+SRIRAAM
+Yea... let me finish, I know. This is just one rule, so. So what is happening? First you have a hidden layer where you are getting the distribution over alarm, and that corresponds to the T's. Now, from that I'm somehow going to combine the effect to get a distribution out from that rule. This output A corresponds to the R that you see, R of I1. In between there is something that acts like a switch. You have an intuition for that?
+
+NANDINI
+Multiplexers? Because at any instance I want to capture a particular cause having an effect on the target...
+
+SRIRAAM
+Right, maybe you don't have the intuition, let me give you the intuition. So it's easy to explain. So what is the point of this? This is where I think Tushar and I hit the, in our head: the gold. So, if I give you a distribution, so the idea is this: if I give you a distribution like this and then I give you another distribution that goes like this. And then I say take the average of these distributions, then you're going to get something like that. And of course it will drop down, because both of them are.... right! So what is happening here is that you're taking these two and then you are somehow combining them, you're taking the average of them. Now if I want to sample in this space, what is going on is that you're going to sample from this space according to this weight. So what is average? Average is simply saying, "I'm going to sample from these two distributions with uniform probability." If I do a weighted mean, it means I am sampling from these distributions according to the weights. Same thing with noisy-or, noisy-or is a combining rule that has exactly a sampling interpretation which basically chooses one of the values based on the noise probability. Okay? So the intuition of these multiplexers is the fact that there is a way you can choose one of these values and use that. That's the idea of multiplexers, okay? And the key condition which I'm sure, can you go two slides forward? The key condition is that, that has to be a particular value, just one of the values. It cannot be multiple values, it should be one of the values according to this cpt clause. Does that make sense, do you get it? Yes, no? Who doesn't get it?
+
+KAUSHIK
+No. Why? Why not multiple values?
+
+SRIRAAM
+Because in the end I'm only observing one value. In the end, after this is actually said, this is just one rule that talks about alarm from sensors, it could be the alarm from burglary, it could be an alarm malfunction, you can have multiple rules, and in the end I have one value which is whether the alarm sounded or not. I cannot choose multiple values of alarms from here, each of them is committing, each rule is committing to one value of alarm. And then I'm going to look at multiple rules and pick one value from multiple rules, that's what's happening. So if you go back two slides or one slide, whatever, one more slide. So here, all the A's could be the courses, Cs could be the courses, As could be the papers. And now from each of the papers is going to tell me a distribution over whether you're satisfied or not, each of the course is going to tell me whether you're satisfied as a student or not, and I'm going to pick from one of these satisfaction values according to courses, and them I'm going to pick one of the satisfaction values according to papers, and then I'm going to look and see I have a satisfaction value for course, and I have a satisfaction for papers, and then I have a combining rule that tells me how to pick. And I will pick according to. Does it make sense? Because in the end there is one satisfaction, which is are you satisfied or not?
+
+DEVENDRA
+So can the combining rule be the same rule?
+
+SRIRAAM
+Sure you can have the same combining rule in both levels, you can have different combining rules in both levels, we're not talking about how they are combined, as long they are decomposible which means the order I'm looking at them does not matter, then I can do this. Okay.
+
+NANDINI
+So, Professor. At any, like you said every time there is only one multiplexer that is turned on that is set to true. So in cases when there are multiple papers that are going to contribute... So every time I'm going to choose for an example.
+
+SRIRAAM
+So for you, a different paper, a different paper may have a different weight, and your co-author Devendra here may have a different weight, and that's okay. Because it's all probabilistic, the whole world is probabilistic, okay? Move forward.
+
+NANDINI
+So the multiplexer clauses which are the H and HR nodes, so they choose a particular value for the target from the given set of parents as we already discussed, Professor? So these clauses are formulated as follows, so these are hard constraints because they have infinite weight on them, so for the level 1 that we have, where we had cr1 combining rules, so if a particular multiplexer clause, multiplexer node is set to true, then the target gets a target R gets it values from the corresponding T, so the value T is assigned to R, and it applies the same way to level two which is once again a hard constraint, a particular R, the final target R at this level two, it's values from the Tr node.
+
+NANDINI (CONT'D)
+So these are set of clauses, so they vary for different combination function stochastic function clauses these are basically priors of the multiplexers we will se a couple examples in the following slides, for each multiplexer you introduce a clause in the MLN which introduces a prior on the multiplexer of... and this again integrity constraint at any instance among different multiplexer nodes only one of them can be true for any example, so these two hard constraints are reduced such that again the weights are infinity, if two multiplexer nodes: h for x1, and h for x2 are set to true, for two examples the examples.
+
+SRIRAAM
+Actually, pause here, I want to ask someone. Navdeep, look at these two clauses and tell me what is out. It's logic, read those two clauses. Doesn't matter what these things mean. What does this say?
+
+NAVDEEP
+That we have the first predicate and the second predicate and the...
+
+SRIRAAM^
+What does that mean?
+
+NAVDEEP
+That like,...
+
+SRIRAAM
+Uniqueness, exactly, that's what uniqueness is all about. There is only one unique H that is true. What does the second clause guarentee? Wait... wait... I'm asking others, I wrote that explanation in the paper. Yang, what does the second one tell you?
+
+YANG
+There is a x... that...
+
+SRIRAAM^
+There is... an x that sets this to true.... Right?
+
+SRIRAAM
+So the first clause says there is a unique x, I mean, if it's true there it has to be unique, the second clause says...
+
+YANG
+There is a...
+
+SRIRAAM^
+Put these two together what do you get?
+
+YANG
+One and only one.
+
+SRIRAAM
+Exactly! That is the one that you missed. Okay? Ensures among different multiplexers that one and only one of them can be true. Okay, that is the beauty of this formalism that you can guarentee that one and only can be with these two clauses. Uniqueness and existential. Nice, okay.
+
+NANDINI
+We see two examples for most commonly-used couple of two most commonly used combining functions, one of them being weighted means, for reasonable explanations we look at level one for now. So we have A which qualitatively influences B, and associates P(V | A), so the posterior goes down to be so where probability of B given different parents A can be expressed as following. So you can imagine if mean of 1, so cpt clauses are the same where Wi depends on parameters and parameters multiplexer clauses and integrative clauses are also the same from the previous explanation, whereas we have a stochastic clause that is the prior on the H's because we have one level here, prior on the multiplexer we are looking at...
+
+SRIRAAM
+Slow, slow, slow. You are fast, you are really fast. Okay. First there is an abuse of notation here. If I wrote the paper like this it is terrible because there is a w there in the probability function, and there is a w here, and they are not the same w. Okay? It's a gross abuse of notation, if I did that it's my mistake. That should be Mi, let's treat those w on the top as mi, which gives you the weight of that rule, the weight of that instance. Then this Wi is (if you go back two slides)... one more, yea. This Wi is by this, it is the log odds of being true vs being false, so move forward. This is how slowly you should be...
+
+[25:52]
