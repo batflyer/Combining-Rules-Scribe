@@ -45,7 +45,13 @@ Harsha Kokel and Nandini Ramanan present the work of Sriraam Natarajan, Tushar K
 
 \section{Summary}
 
-The aim of this paper is twofold: remedy the representative disparities between directed and undirected models (specifically Bayesian Networks and Markov Logic Networks), and show how decomposable combination functions can be used to augment these in the relational setting.
+The aim of this paper is twofold: remedy the representative disparities between directed and undirected models (specifically Bayesian Networks and Markov Logic Networks) with causal independence, and show how decomposable combination functions can be used to augment these in the relational setting. Independence  of causal influences (``ICI'', from Heckerman) can be shown using directed models since they have a coherent joint distribution from which individual sensors can be aggregated. But this comes somewhat at the expense of more rigorous modeling requirements, perhaps most notably the inability to have cycles.
+
+\subsection{Independence of Causal Influences}
+
+Consider two domains: one in which we are considering the values produced by a set of \textit{N} sensors, and another where we are trying to conceive a student's overall satisfaction by observing observations about their grades and reviews of papers they published. Modeling a full conditional probability table (CPT) would normally require $2^n$ values, but if one observes that individual measurements of each sensor are independent of each other one will see the root of the idea of causal independence: there are many values which can influence your target, but when each are likely to be independent of one another then learning the entire CPT is wasteful.
+
+\subsection{Decomposable Combination Functions}
 
 1. What are decomposable combination functions and how do they differ from the wider set of all combination functions?
 2. What is the algorithm that converts directed models to undirected models (touch on the cpt rules)?
