@@ -49,23 +49,21 @@ The aim of this paper is twofold: remedy the representative disparities between 
 
 \subsection{Independence of Causal Influences}
 
-Consider two domains: one in which we are considering the values produced by a set of \textit{N} sensors, and another where we are trying to conceive a student's overall satisfaction by observing observations about their grades and reviews of papers they published. Modeling a full conditional probability table (CPT) would normally require $2^n$ values, but if one observes that individual measurements of each sensor are independent of each other one will see the root of the idea of causal independence: there are many values which can influence your target, but when each are likely to be independent of one another then learning the entire CPT is wasteful.
+Consider two domains: one in which we are considering the values produced by a set of \textit{N} sensors, and another where we are trying to conceive a student's overall satisfaction by observing observations about their grades and reviews of papers they published. Modeling a full conditional probability table (CPT) would normally require an order of $2^n$ values, but if one observes that individual measurements of each sensor are independent of each other one will see the root of the idea of causal independence: there are many values which can influence your target, but when each are likely to be independent of one another then learning the entire CPT is wasteful.
 
 \subsection{Decomposable Combination Functions}
 
-1. What are decomposable combination functions and how do they differ from the wider set of all combination functions?
-2. What is the algorithm that converts directed models to undirected models (touch on the cpt rules)?
-3. How are the claims of this paper evaluated?
+The authors extended Heckerman and Breese's definition of decomposable causal influence to the relational setting. Intuition for this idea is that a function is decomposable if it returns the same value regardless of the order that variables are observed in. Examples include aggregators such as \texttt{MEAN}, \texttt{MEDIAN}, \texttt{MODE}, \texttt{NOISY-OR}, \texttt{NOISY-AND}, etc. Whereas examples of nondecomposable functions may include \texttt{Difference}, \texttt{cross-correlation}, \texttt{first-m}, \texttt{m-of-n}, or other functions where the observation order changes your outcome.
 
 \section{Pros and Cons}
-
-Pros:
-Cons: Most notably, this method works best when the number of unobserved variables is small. Even when there is a single unobserved variable, the search space grows exponentially.
+This paper introduced a method to include causal independence in undirected models, introduced decomposable combining rules in Markov Logic Networks, and made compelling arguments about these being reasonable assumptions in medical domains. However, a notable drawback of this method is that it works best when the number of unobserved variables is small. Even when there is a single unobserved variable, the search space grows exponentially.
 
 \section{Contributions}
 
 The authors claim the following contributions: ``(1) A provable linear representation of decomposable combining functions within MLNs; (2) Explicit examples of average-based and noisy combination functions; (3) A formal description of the algorithm for converting from directed models with combining rules to MLNs; (4) A macro-definition that allows for succinct specification of the resulting MLNs; (5) Empirical proof that combining rules can improve the learning of MLNs when the domain knowledge available is minimal."
 
 \section{Improvements}
+
+The main change I would make if these experiments were re-implemented and this paper was written today, would be to expand on inference time of MLNs with and without combining rules. The authors explain that ``this translation from combining rules to MLNs is not without its cost. We found that the inference in the resulting MLN is 4-5 times slower than the one that does not use the combining rules.'' The authors go on to mention that specialized inference algorithms may be necessary as a point of future research.
 
 \end{document}
