@@ -183,6 +183,50 @@ NANDINI
 We see two examples for most commonly-used couple of two most commonly used combining functions, one of them being weighted means, for reasonable explanations we look at level one for now. So we have A which qualitatively influences B, and associates P(V | A), so the posterior goes down to be so where probability of B given different parents A can be expressed as following. So you can imagine if mean of 1, so cpt clauses are the same where Wi depends on parameters and parameters multiplexer clauses and integrative clauses are also the same from the previous explanation, whereas we have a stochastic clause that is the prior on the H's because we have one level here, prior on the multiplexer we are looking at...
 
 SRIRAAM
-Slow, slow, slow. You are fast, you are really fast. Okay. First there is an abuse of notation here. If I wrote the paper like this it is terrible because there is a w there in the probability function, and there is a w here, and they are not the same w. Okay? It's a gross abuse of notation, if I did that it's my mistake. That should be Mi, let's treat those w on the top as mi, which gives you the weight of that rule, the weight of that instance. Then this Wi is (if you go back two slides)... one more, yea. This Wi is by this, it is the log odds of being true vs being false, so move forward. This is how slowly you should be...
+Slow, slow, slow. You are fast, you are really fast. Okay. First there is an abuse of notation here. If I wrote the paper like this it is terrible because there is a w there in the probability function, and there is a w here, and they are not the same w. Okay? It's a gross abuse of notation, if I did that it's my mistake. That should be Mi, let's treat those w's on the top as mi, which gives you the weight of that rule--the weight of that instance. Then this Wi is (if you go back two slides)... one more, yea. This Wi is by this, it is the log odds of being true vs being false, so move forward. This is how slowly you should be, you can't be just (un) is not going to get you anything. Be slow. So that's the CPT clauses, it's exactly the same. That Wi is not the same as that Wi, please change that in your head. And you might want to change that before you post the slides. Then this H is log(Mi), because that gives you the probability of choosing that instance, the prior of choosing that instance. So when I'm sampling, each sensor might have a weight, the trick is to know which one do I sample? Change this W to M, then it becomes easier, then it becomes log(Mi), this multiplexer again ensures that you choose one and only one.
 
-[25:52]
+NANDINI
+Another example that we have is lazy combination of different instantiation rule, where the marginals are of this form where fi is the probability of the particular boolean first ai not setting the value of B as true. The CPT clauses are fairly straightforward here, that is if a particular cause is not true (a is not true), then t is not true and it is a hard constraint, but if the particular clause a is true, then p is true and the weight for the clauses wi, which is the function of fi's. So here the multiplexer clauses are independent, but pretty redundant because in stochastic clauses we don't really have an h, so R gets its value directly from the P. It asserts that if there exists a T which is true, R is assigned to that value, so these two clauses are not really needed to be modeled.
+
+SRIRAAM
+Stochastic clauses have something stronger.
+
+NANDINI
+So here, H don't actually.
+
+SRIRAAM^
+I know, but you said half of the story. What does the W implication mean?
+
+SRIRAAM
+If and only if! R is true if and only if there exists at least one clause that is true, you said the other way (if the clause is true, R is true). R is true if and only if there exists a clause that is true, so it is stronger. So I hope that you see the most important things, the translation that we gave, the multiplexer clause always stays the same, the integrity clause always stay the same, the only two sets of clauses that change are the CPT depending on what you get (you just change that) and the stochastic clauses which say how do you combine them. So those are the only two things that change, and two things remain the same no matter what.
+
+NANDINI
+So I think the algorithm for each of the focil statements, each pair independent parameter theta for a given statement, we introduced a CPT for each of the parameters and then at the focil statement level we use a multiplexer and a clause and the outer level for combining all the rules together, we have one multiplexer clause, one stochastic clause for each of the rules and then finally combine them two integrity constraints are introduced. So in the paper they have proved the bounds, which is the number of clauses required by the MLN to model the statement is O(n\*k) where n is the number of statements we are looking at and k is the number of independent parameters. We saw how causal independence can be incorporated in undirected models, we have introduced how decomposable combining rules can be used in MLNs by introducing these special clauses, it's a reasonable assumption in medical domain (as with large datasets), assuming a particular cause is independent of the others is a reasonable assumption to model the domain. One of the we thought the paper was good examples and very well written.
+
+SRIRAAM
+That's expected, you can laugh.
+
+NANDINI
+One of the troubles, because we're introducing a lot of auxiliary variables and nodes in between, exact inference could slow down because you have to sum out a lot of variables.
+
+SRIRAAM
+Sure, do we have the experiments, it's in the paper right? Do I have timings on that one? Can you read the timings?
+
+NANDINI
+We don't have the timings, we have AUC...
+
+SRIRAAM
+No timings. So it's true and false. It's faster than MLN inference. I think your intuition is correct, too many hidden variables: because the number of hidden variables is pretty high a hypothesis is that it is going to be slow, but if I observe all of the A's and all the C's, actually because the constraints are (most of them) hard constraints, it's not actually that slow, it's pretty fast. It's very fast actually, it's like an order of magnitude than, because of the independence. Your cause is exactly true, if one of those causes is unobserved, then I have to infer over the hidden causes and the unobserved: that blows up like crazy. If you run belief propogation it will fail, if you run most sampling methods it will fail; because most of these probabilistic methods cannot handle hard clauses, they cannot handle probabilities of zero or one, it is the easiest case for humans but tough for reasoning. So your answer is correct, the interaction of these things can make it slower under the condition that one of the causes is unobserved. Even if one cause is unobserved, then it blows up. So really if I have to criticize my paper, it is that this paper assumes that all the causes are observed. That case is easy but how easy is it? I see fever, do I see the causes? No. The problem is often reversed: then CPT... so that would be my criticism of my own paper. From a theoretical perspective we like it, but from a practical perspective does it make sense? That would be my statement. I'm surprised we didn't report numbers for running time, our running time was fabulous compared to markov logic networks.
+
+HARSHA
+We thought... for the presentation...
+
+SRIRAAM
+Show results, that helps, like Mayukh did. So I hope you guys are learning on how to present research papers, you have to kind of put this in context of the field. Thanks.
+
+**APPLAUSE**
+
+SRIRAAM
+My biggest problem is whether this is a good assumption, and I think the answer is no.
+
+Papers shuffle as people organize their things.
