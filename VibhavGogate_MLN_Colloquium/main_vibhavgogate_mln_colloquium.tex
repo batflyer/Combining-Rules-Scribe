@@ -1,0 +1,57 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{left=2cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+
+\title{
+    Efficient Inference and Learning in Markov Logic Networks\\
+    \large Summary of Professor Vibhav Gogate's Talk from Friday, February 23.\\
+           Presenting joint work with:\\
+           \textit{Somdeb Sarkhel}, \textit{Deepak Vanugopal}, \textit{Parag Singla}, and \textit{Nicholas Ruozzi}
+}
+\author{Based on the notes taken by: Alexander L. Hayes}
+\date{February 27, 2018}
+\begin{document}
+\maketitle
+
+
+\begin{abstract}
+``A new way of doing machine learning'' was the theme of the talk. Instead of feature engineering where we learn complicated non-linear classifiers over a set of positive and negative examples, we should aim to develop methods which can handle codependent instances, entity mentions, relationships, and noise present in the data.  ``Statistical Relational Learning'' (SRL) handles relations, uncertainty, scale of data, and combines the relational and probabilistic representations that are typically present.
+\end{abstract}
+
+\section{Motivation: Markov Logic}
+
+Consider a scenario where you work for a big social network company that wants to launch an advertising campaign that specifically targets nicotine patches to to smokers. There is a small subset of members in your network that you are certain are smokers, so your goal is to identify who the smokers in your network are through their friendships and an assumption that people with asthma will also be interested in  seeing ads for nicotine patches. Logic is a powerful way to represent that domain knowledge, and a weight may be assigned which roughly represents how true a formula is.
+
+$$\forall x \forall y\ Smokes(x)\ \land\ Friends(x,\ y)\ \Longrightarrow\ \neg Asthma(y)\ ;\ 1.75$$
+
+Most people in this large social network have somewhere between 250-500 friends, Markov Logic Networks can be a template for learning large undirected graphical models which represent this world. But even a world with a small number of people or objects may produce a massive network.
+
+Joint distribution over possible worlds:
+
+$$P(\omega)\ = \frac{1}{Z}\ exp(\sum_{f} \omega_f\ \#SatGroundings(f,\ \omega))$$
+$$Z = \sum_{\omega} exp(\sum_{f}\ \omega_f\ \#SatGroundings(f,\ \omega))$$
+
+\section{Weight Learning}
+
+Weight learning may be performed generatively or discriminatively over data in a relational database. Unlike traditional machine learning, typical MLN learning involves a single instance to learn from, where the instance is the state of a database at a given point in time. Using gradient ascent to achieve a maximum likelihood estimate on your data is one possibility, but scale becomes an issue in the presence of a large number of attributes.
+
+Scalable Weight Learning has the aim of providing heuristics to try and reduce the size of the Markov Logic Network. Professor Gogate presented three methods to achieve this: \textit{Contrastive Divergence (CD)}, \textit{Voted Perceptron (VP)}, and \textit{Pseudo Likelihood Learning (PLL)}. CD changes the way that expectation is calculated, VP attempts to approximate the expectation, and PLL changes the objective to directly approximate the likelihood (but is generally intractible). These methods were shown on several standard relational datasets, including protein interaction and entity resolution.
+
+\section{Future Work}
+
+\begin{itemize}
+    \item Scalable Weight Learning for ``Untied MLNs"
+    \item Precise definition for stochastic gradient descent in MLNs.
+    \item Apply to large, deep latent models.
+    \item Apply to new application domains.
+\end{itemize}
+
+\section{Question and Answer Session}
+
+\begin{itemize}
+    \item Professor Sriraam Natarajan: How would MLN comparisons be defined when the database is broken into pieces?
+    \item Professor Gopal Gupta: Where are the challenges in Machine Learning? Scalability and Inference in the presence of missing data.
+\end{itemize}
+
+\end{document}
