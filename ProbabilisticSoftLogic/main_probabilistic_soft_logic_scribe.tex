@@ -49,7 +49,17 @@ Srijita Das and Navdeep Kaur present the work of Islam Beltagy, Katrin Erk, and 
 
 \section{Summary}
 
+``Textual Similarity'' is usually defined as a set of distance metrics in text classification tasks, with common algorithms including Hamming distance, Levenshtein (edit) distance, or cosine similarity. In a broad sense, these collective algorithms make observations about the occurrence of letters, words, and their ordering; then use these to calculate a similarity score between strings.
+
+``Semantic Textual Similarity'' is the harder problem which attempts to answer how similar two strings are in \textit{meaning}. As a motivating example, a single character can drastically change the meaning of a sentence: ``Let's eat, grandma!'' and ``Let's eat grandma!'' differ by a comma, but the former implies that dinner is about to begin while the latter implies a family's brutal descent into human cannibalism.
+
+The authors propose a learning approach to solving semantic textual similar, where the idea is to model the meaning of a phrase by determining the meaning of its parts and the relationships that connect the parts. They use the framework of ``probabilistic soft logic'' (or \textbf{PSL}), which is an approach that combines logical semantics and distributional semantics into a single representation with tractable inference.
+
+This method was evaluated based on three datasets (msr-vid, msr-par, and SICK) for several variations of the grounding process and compared with Markov Logic Networks. The authors reported CPU time and Pearson correlations across each.
+
 \section{Pros and Cons}
+
+
 
 \section{Contributions}
 
