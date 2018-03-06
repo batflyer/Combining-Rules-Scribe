@@ -57,12 +57,30 @@ The authors propose a learning approach to solving semantic textual similar, whe
 
 This method was evaluated based on three datasets (msr-vid, msr-par, and SICK) for several variations of the grounding process and compared with Markov Logic Networks. The authors reported CPU time and Pearson correlations across each.
 
-\section{Pros and Cons}
+\section{Pros}
 
-
+\begin{itemize}
+    \item The authors define a system which combines distributional and logical semantics of text, giving better insight to the semantic meaning of a sentence than one or the other would alone.
+    \item Evidence is defined as a set of scores, which allows sentences to have multiple scores and therefore multiple interpretations. This is powerful since text may have inherent ambiguities.
+\end{itemize}
 
 \section{Contributions}
 
+The authors claim the following contributions:
+
+\begin{itemize}
+    \item ``We use the same combined logic-based and distribution framework as `Montague Meets Markov: Deep Semantics with Probabilistic Logical Form' (2013), but replace Markov Logic Networks with Probabilistic Soft Logic.''
+    \item ``We show how to use PSL for STS, and describe changes to the PSL framework that make it more effective for STS.''
+\end{itemize}
+
+These claims are evaluated on three datasets.
+
 \section{Improvements}
+
+Professor Natarajan and Professor Kunapuli point out the following: Probabilistic Soft Logic directly optimizes a similarity score, whereas Markov Logic Networks optimize the log-likelihood. With Pearson correlation as the metric these are evaluated against, PSL should always win since it directly optimizes the correct thing.
+
+``What I would have done, is on one side: the similarity. And the other side is the probability of a sentence being true in the world. Then I could have said that I have two sides of the story, and I can also compare which is true and which is false."---Professor Natarajan
+
+The authors used \href{https://alchemy.cs.washington.edu/}{Alchemy} to evaluate Markov Logic Networks. \href{http://i.stanford.edu/hazy/tuffy/}{Tuffy} would have made more sense as the implementation to use, particularly since it scales better than the former.
 
 \end{document}
